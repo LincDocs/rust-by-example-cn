@@ -2,4 +2,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: https://LincDocs.github.io/rust-by-example-cn-/sitemap.xml
+Sitemap: https://LincDocs.github.io/rust-by-example-cn/sitemap.xml

@@ -1,0 +1,43 @@
+import{_ as t,e as l,k as p,f as s,g as a,i as c,h as i,r,o as d}from"./app-CY03Lsxp.js";const o={};function m(u,n){const e=r("RouteLink");return d(),l("div",null,[n[3]||(n[3]=p(`<h1 id="存在问题" tabindex="-1"><a class="header-anchor" href="#存在问题"><span>存在问题</span></a></h1><p><code>trait</code> 如果对实现了它的容器类型是泛型的，则须遵守类型规范要求——<code>trait</code> 的使用者<strong>必须</strong>指出 <code>trait</code> 的全部泛型类型。</p><p>在下面例子中，<code>Contains</code> <code>trait</code> 允许使用泛型类型 <code>A</code> 和 <code>B</code>。然后我们为<br><code>Container</code> 类型实现了这个 trait，将 <code>A</code> 和 <code>B</code> 指定为 <code>i32</code>，这样就可以对它们使用 <code>difference()</code> 函数。</p><p>因为 <code>Contains</code> 是泛型的，我们必须在 <code>fn difference()</code> 中显式地指出<strong>所有的</strong>泛型类型。但实际上，我们想要表达，<code>A</code> 和 <code>B</code> 究竟是什么类型是由输入 <code>C</code> 决定的。在下一节会看到，关联类型恰好提供了这样的功能。</p><div class="language-rust,editable line-numbers-mode" data-highlighter="shiki" data-ext="rust,editable" data-title="rust,editable" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span>struct Container(i32, i32);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// 这个 trait 检查给定的 2 个项是否储存于容器中</span></span>
+<span class="line"><span>// 并且能够获得容器的第一个或最后一个值。</span></span>
+<span class="line"><span>trait Contains&lt;A, B&gt; {</span></span>
+<span class="line"><span>    fn contains(&amp;self, _: &amp;A, _: &amp;B) -&gt; bool; // 显式地要求 \`A\` 和 \`B\`</span></span>
+<span class="line"><span>    fn first(&amp;self) -&gt; i32; // 未显式地要求 \`A\` 或 \`B\`</span></span>
+<span class="line"><span>    fn last(&amp;self) -&gt; i32;  // 未显式地要求 \`A\` 或 \`B\`</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>impl Contains&lt;i32, i32&gt; for Container {</span></span>
+<span class="line"><span>    // 如果存储的数字和给定的相等则为真。</span></span>
+<span class="line"><span>    fn contains(&amp;self, number_1: &amp;i32, number_2: &amp;i32) -&gt; bool {</span></span>
+<span class="line"><span>        (&amp;self.0 == number_1) &amp;&amp; (&amp;self.1 == number_2)</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    // 得到第一个数字。</span></span>
+<span class="line"><span>    fn first(&amp;self) -&gt; i32 { self.0 }</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    // 得到最后一个数字。</span></span>
+<span class="line"><span>    fn last(&amp;self) -&gt; i32 { self.1 }</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// 容器 \`C\` 就包含了 \`A\` 和 \`B\` 类型。鉴于此，必须指出 \`A\` 和 \`B\` 显得很麻烦。</span></span>
+<span class="line"><span>fn difference&lt;A, B, C&gt;(container: &amp;C) -&gt; i32 where</span></span>
+<span class="line"><span>    C: Contains&lt;A, B&gt; {</span></span>
+<span class="line"><span>    container.last() - container.first()</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>fn main() {</span></span>
+<span class="line"><span>    let number_1 = 3;</span></span>
+<span class="line"><span>    let number_2 = 10;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    let container = Container(number_1, number_2);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    println!(&quot;Does container contain {} and {}: {}&quot;,</span></span>
+<span class="line"><span>        &amp;number_1, &amp;number_2,</span></span>
+<span class="line"><span>        container.contains(&amp;number_1, &amp;number_2));</span></span>
+<span class="line"><span>    println!(&quot;First number: {}&quot;, container.first());</span></span>
+<span class="line"><span>    println!(&quot;Last number: {}&quot;, container.last());</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    println!(&quot;The difference is: {}&quot;, difference(&amp;container));</span></span>
+<span class="line"><span>}</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="参见" tabindex="-1"><a class="header-anchor" href="#参见"><span>参见：</span></a></h3>`,6)),s("p",null,[a(e,{to:"/custom_types/structs.html"},{default:i(()=>n[0]||(n[0]=[s("code",null,"struct",-1)])),_:1}),n[2]||(n[2]=c(", 和 ")),a(e,{to:"/trait.html"},{default:i(()=>n[1]||(n[1]=[s("code",null,"trait",-1)])),_:1})])])}const b=t(o,[["render",m],["__file","the_problem.html.vue"]]),h=JSON.parse('{"path":"/generics/assoc_items/the_problem.html","title":"存在问题","lang":"zh-CN","frontmatter":{"description":"存在问题 trait 如果对实现了它的容器类型是泛型的，则须遵守类型规范要求——trait 的使用者必须指出 trait 的全部泛型类型。 在下面例子中，Contains trait 允许使用泛型类型 A 和 B。然后我们为 Container 类型实现了这个 trait，将 A 和 B 指定为 i32，这样就可以对它们使用 difference() ...","head":[["meta",{"property":"og:url","content":"https://LincDocs.github.io/rust-by-example-cn/generics/assoc_items/the_problem.html"}],["meta",{"property":"og:site_name","content":"rust-by-example-cn"}],["meta",{"property":"og:title","content":"存在问题"}],["meta",{"property":"og:description","content":"存在问题 trait 如果对实现了它的容器类型是泛型的，则须遵守类型规范要求——trait 的使用者必须指出 trait 的全部泛型类型。 在下面例子中，Contains trait 允许使用泛型类型 A 和 B。然后我们为 Container 类型实现了这个 trait，将 A 和 B 指定为 i32，这样就可以对它们使用 difference() ..."}],["meta",{"property":"og:type","content":"article"}],["meta",{"property":"og:locale","content":"zh-CN"}],["script",{"type":"application/ld+json"},"{\\"@context\\":\\"https://schema.org\\",\\"@type\\":\\"Article\\",\\"headline\\":\\"存在问题\\",\\"image\\":[\\"\\"],\\"dateModified\\":null,\\"author\\":[{\\"@type\\":\\"Person\\",\\"name\\":\\"LincDocs\\",\\"url\\":\\"https://github.com/LincDocs/rust-by-example-cn/\\"}]}"]]},"git":{},"readingTime":{"minutes":1.42,"words":425},"filePathRelative":"generics/assoc_items/the_problem.md","excerpt":"\\n<p><code>trait</code> 如果对实现了它的容器类型是泛型的，则须遵守类型规范要求——<code>trait</code> 的使用者<strong>必须</strong>指出 <code>trait</code> 的全部泛型类型。</p>\\n<p>在下面例子中，<code>Contains</code> <code>trait</code> 允许使用泛型类型 <code>A</code> 和 <code>B</code>。然后我们为<br>\\n<code>Container</code> 类型实现了这个 trait，将 <code>A</code> 和 <code>B</code> 指定为 <code>i32</code>，这样就可以对它们使用 <code>difference()</code> 函数。</p>","autoDesc":true,"bioChainData":{"outlink":[{"title":"structs","link":"custom_types/structs.html"},{"title":"trait","link":"trait.html"}],"backlink":[{"title":"SUMMARY","link":"SUMMARY.html"}],"localMap":{"nodes":[{"id":"generics/assoc_items/the_problem.md","value":{"title":"the_problem","path":"generics/assoc_items/the_problem.md","outlink":["custom_types/structs.md","trait.md"],"backlink":["SUMMARY.md"]}},{"id":"custom_types/structs.md","value":{"title":"structs","path":"custom_types/structs.md","outlink":[],"backlink":[]}},{"id":"trait.md","value":{"title":"trait","path":"trait.md","outlink":[],"backlink":[]}},{"id":"SUMMARY.md","value":{"title":"SUMMARY","path":"SUMMARY.md","outlink":[],"backlink":[]}}],"links":[{"source":"generics/assoc_items/the_problem.md","target":"custom_types/structs.md"},{"source":"generics/assoc_items/the_problem.md","target":"trait.md"},{"source":"SUMMARY.md","target":"generics/assoc_items/the_problem.md"}]}}}');export{b as comp,h as data};
